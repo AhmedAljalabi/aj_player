@@ -175,8 +175,9 @@ class _PlayMusicState extends State<PlayMusic> {
           return ReorderableListView.builder(
             itemCount: q.length,
             onReorder: (oldIdx, newIdx) {
-              if (newIdx > oldIdx) newIdx -= 1;
-              _handler.updateQueue(List.of(q)..insert(newIdx, (q.removeAt(oldIdx))));
+              // When moving an item forward, the target index decreases by one after removal.
+                            if (newIdx > oldIdx) newIdx -= 1;
+                            _handler.updateQueue(List.of(q)..insert(newIdx, (q.removeAt(oldIdx))));
             },
             itemBuilder: (_, i) => ListTile(
               key: ValueKey(q[i].id),

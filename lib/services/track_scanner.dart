@@ -12,7 +12,12 @@ class TrackScanner {
         .listSync(recursive: true)
         .where((f) => f.path.toLowerCase().endsWith('.mp3'));
 
-    final box = Hive.box<Track>('tracksBox'); // open in bootstrap
+    Box<Track> box;
+    if (Hive.isBoxOpen('tracksBox')) {
+      box = Hive.box<Track>('tracksBox');
+    } else {
+      box = await Hive.openBox<Track>('tracksBox');
+    }
     for (var file in mp3Files) {
       final track = Track(
         id: const Uuid().v4(),
