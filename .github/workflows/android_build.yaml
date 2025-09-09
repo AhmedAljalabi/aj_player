@@ -1,0 +1,21 @@
+name: Build Android APK
+on:
+  push:
+    branches:
+      - main # The branch you want to build from
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable' # <--- Add this line to specify the channel
+          flutter-version: '3.35.1' # <--- Change this to a specific version, or '3.x'
+      - run: flutter pub get
+      - run: flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
